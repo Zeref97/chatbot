@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
-import socket
+import random
+import socket, select
+from time import gmtime, strftime
+from random import randint
+import time
+import os
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("127.0.0.1", 6666)) # here you must past the public external ipaddress of the server machine, not that local address
+image = "/home/tan/Videos/video00.mp4"
 
-f = open("image.mp4", "wb")
-data = None
-while True:
-    m = s.recv(1024)
-    data = m
-    if m:
-        while m:
-            m = s.recv(1024)
-            data += m
-        else:
-            break
-f.write(data)
-f.close()
-s.close()
-print("Done receiving")
+HOST = '127.0.0.1'
+PORT = 6666
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = (HOST, PORT)
+sock.connect(server_address)
+
+try:
+    # open image
+    myfile = open(image, 'rb')
+    size = os.path.getsize(image)
+    data = myfile.read(size)
+    sock.sendall(data)
+    myfile.close()
+finally:
+    sock.close()
