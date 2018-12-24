@@ -43,16 +43,19 @@ app.post('/webhook', function(req, res) {
         if (message.message.text) {
           var text = message.message.text;
           var convert = text.toLowerCase();
-          if (convert == "enable human detection"){
-            sendMessage(senderId, "The camera is enabled human detection");
+          if (convert == "help"){
+            var help = "We support some function: \n \ 1. Enable human detection \n \ 2. Disable human detection \n \ 3. Capture image / Take a photo \n \ 4. Capture video \n \ 5. Camera information ";
+            sendMessage(senderId, help);
+          }
+          else if (convert == "enable human detection"){
+            sendMessage(senderId, "The camera is enabled human detection. \n \ Detecting human intrusion!");
             flag = 1;
-            sendMessage(senderId, "Detecting human intrusion!");
-            //sendImageMessage(senderId, "/home/tan/Desktop/Screenshot from 2018-12-07 14-39-10.png");
-            sendVideoMessage("2347613611946588", "/home/tan/Downloads/video-1544167658.mp4");
+            sendImageMessage(senderId, "photo.png");
+            sendVideoMessage(senderId, "video.mp4");
             sendMessage(senderId, "rtsp://14.161.48.60:5546");
           }
           else if (convert == "disable human detection"){
-            sendMessage(senderId, "The camera is disabled human detection");
+            sendMessage(senderId, "The camera is disabled human detection.");
             flag = 0;
           }
           else if (flag == 1){
@@ -61,16 +64,16 @@ app.post('/webhook', function(req, res) {
               sendMessage(senderId, "Resolution: 1280x720");
               sendMessage(senderId, "Codec: H264");
               sendMessage(senderId, "FPS: 10");
-              sendMessage(senderId, "Human detection is enable")
+              sendMessage(senderId, "Human detection is enable.")
             }
-            else if(convert == "capture image"){
-              sendImageMessage(senderId, "/home/tan/Pictures/Screenshot from 2018-12-08 12-05-16.png");
+            else if(convert == "capture image" || convert == "take a photo"){
+              sendImageMessage(senderId, "photo.png");
             }
             else if(convert == "capture video"){
-              sendVideoMessage(senderId, "/home/tan/Videos/video00.mp4");
+              sendVideoMessage(senderId, "video.mp4");
             }
             else{
-              sendMessage(senderId, "Command not found, please try again");
+              sendMessage(senderId, "I don't understand what you mean. You can send 'Help' to get support from us.");
             }
           }
           else if (flag == 0){
@@ -79,16 +82,17 @@ app.post('/webhook', function(req, res) {
               sendMessage(senderId, "Resolution: 1280x720");
               sendMessage(senderId, "Codec: H264");
               sendMessage(senderId, "FPS: 10");
-              sendMessage(senderId, "Human detection is disable");
+              sendMessage(senderId, "Human detection is disable.");
             }
-            else if(convert == "capture image"){
-              sendImageMessage(senderId, "/home/tan/Pictures/Screenshot from 2018-12-08 12-05-16.png");
+            else if(convert == "capture image" || convert == "take a photo"){
+              sendImageMessage(senderId, "photo.png");
             }
             else if(convert == "capture video"){
-              sendVideoMessage(senderId, "/home/tan/Videos/video00.mp4");
+              sendVideoMessage(senderId, "video.mp4");
             }
             else{
-              sendMessage(senderId, "Command not found, please try again");
+              sendMessage(senderId, text);
+              //sendMessage(senderId, "I don't understand what you mean. You can send 'Help' to get support from us.");
             }
           }
           console.log(text); // In tin nhắn người dùng
